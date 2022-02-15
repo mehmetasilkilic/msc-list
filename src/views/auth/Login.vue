@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <h3>Login</h3>
-    <input type="email" placeholder="e-mail" v-model="email" required />
-    <input type="password" placeholder="password" v-model="password" required />
+    <input type="email" placeholder="E-mail" v-model="email" required />
+    <input type="password" placeholder="Password" v-model="password" required />
     <div class="error" v-if="error">{{ error }}</div>
     <button v-if="!isPending">Login</button>
     <button v-if="isPending" disabled>Loading</button>
@@ -12,10 +12,12 @@
 <script>
 import useLogin from "@/composables/useLogin";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const { error, login, isPending } = useLogin();
+    const router = useRouter();
 
     const email = ref("");
     const password = ref("");
@@ -25,6 +27,7 @@ export default {
 
       if (!error.value) {
         console.log("user signed up");
+        router.push({ name: "Home" });
       }
     };
     return { email, password, handleSubmit, error, isPending };

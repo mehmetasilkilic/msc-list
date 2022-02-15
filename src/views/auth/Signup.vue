@@ -7,8 +7,8 @@
       v-model="displayName"
       required
     />
-    <input type="email" placeholder="e-mail" v-model="email" required />
-    <input type="password" placeholder="password" v-model="password" required />
+    <input type="email" placeholder="E-mail" v-model="email" required />
+    <input type="password" placeholder="Password" v-model="password" required />
     <div class="error" v-if="error">{{ error }}</div>
     <button v-if="!isPending">Sign up</button>
     <button v-if="isPending" disabled>Loading</button>
