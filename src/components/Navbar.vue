@@ -6,9 +6,14 @@
         <router-link :to="{ name: 'Home' }">MSC LIST</router-link>
       </h1>
       <div class="links">
+        <router-link v-if="user" :to="{ name: 'Home' }">Home</router-link>
+        <router-link v-if="user" :to="{ name: 'UserPlaylists' }"
+          >My Playlist</router-link
+        >
         <router-link v-if="user" :to="{ name: 'CreatePlaylist' }"
           >Create Playlist</router-link
         >
+        <span v-if="user">Hi there, {{ user.displayName }} </span>
         <button v-if="user" @click="handleClick">Logout</button>
         <router-link v-if="!user" class="btn" :to="{ name: 'Signup' }"
           >Signup</router-link
@@ -74,5 +79,13 @@ button {
 
 img {
   max-height: 60px;
+}
+
+span {
+  font-size: 14px;
+  display: inline-block;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid #eee;
 }
 </style>

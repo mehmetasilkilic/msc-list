@@ -40,7 +40,7 @@ export default {
   transition: all ease 0.2s;
 }
 
-.thumnail {
+.thumbnail {
   max-width: 100px;
   max-height: 100px;
   overflow: hidden;

@@ -13,7 +13,21 @@
     </div>
 
     <!-- song list -->
-    <div class="song-list">song list here</div>
+    <div class="song-list">
+      <div v-if="!playlist.songs.length">
+        No songs have been added to this playlist yet.
+      </div>
+      <div v-for="song in playlist.songs" :key="song.id" class="single-song">
+        <div class="details">
+          <h3>{{ song.title }}</h3>
+          <p>{{ song.artist }}</p>
+        </div>
+        <button v-if="ownership" @click="handleSongDelete(song.id)">
+          Delete
+        </button>
+      </div>
+      <AddSong v-if="ownership" :playlist="playlist" />
+    </div>
   </div>
 </template>
 
@@ -22,16 +36,18 @@ import getDocument from "@/composables/getDocument";
 import useDocument from "@/composables/useDocument";
 import useStorage from "@/composables/useStorage";
 import getUser from "@/composables/getUser";
+import AddSong from "@/components/AddSong.vue";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
   props: ["id"],
+  components: { AddSong },
   setup(props) {
     const { error, document: playlist } = getDocument("playlists", props.id);
     const { user } = getUser();
     const { deleteImage } = useStorage();
-    const { deleteDoc } = useDocument("playlists", props.id);
+    const { deleteDoc, updateDoc } = useDocument("playlists", props.id);
     const router = useRouter();
 
     const ownership = computed(() => {
@@ -46,7 +62,12 @@ export default {
       router.push({ name: "Home" });
     };
 
-    return { error, playlist, ownership, handleDelete };
+    const handleSongDelete = async (id) => {
+      const songs = playlist.value.songs.filter((song) => song.id != id);
+      await updateDoc({ songs });
+    };
+
+    return { error, playlist, ownership, handleDelete, handleSongDelete };
   },
 };
 </script>
@@ -89,5 +110,14 @@ export default {
 }
 .description {
   text-align: left;
+}
+
+.single-song {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--secondary);
+  margin-bottom: 20px;
 }
 </style>

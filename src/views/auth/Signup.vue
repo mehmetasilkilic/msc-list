@@ -17,11 +17,13 @@
 
 <script>
 import useSignup from "@/composables/useSignup";
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 export default {
   setup() {
     const { error, signup, isPending } = useSignup();
+    const router = useRouter();
 
     const displayName = ref("");
     const email = ref("");
@@ -31,6 +33,7 @@ export default {
       const res = await signup(email.value, password.value, displayName.value);
 
       if (!error.value) {
+        router.push({ name: "Home" });
         console.log("user signed up");
       }
     };
